@@ -6,7 +6,7 @@ namespace NZWalks.API.Profiles
     {
         public RegionsProfile()
         {
-           
+            CreateMap<Models.Domain.Region, Models.DTOs.Region>();
         }
     }
 }

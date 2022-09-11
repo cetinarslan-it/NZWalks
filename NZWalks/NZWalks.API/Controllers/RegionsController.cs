@@ -24,11 +24,67 @@ namespace NZWalks.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllRegions()
         {
-            var regions = await _regionRepository.GetAllAsync();
+            var regions = await _regionRepository.GetAllRegionsAsync();
 
             var regionsDTO = _mapper.Map<List<Models.DTOs.Region>>(regions);
 
             return Ok(regionsDTO);
         }
+
+        [HttpGet]
+        [Route("{id:guid}")]
+        [ActionName("GetOneRegionAsync")]
+        public async Task<IActionResult> GetOneRegionAsync(Guid id)
+        {
+            var region = await _regionRepository.GetSingleRegionAsync(id);
+
+            if (region == null)
+            {
+                return NotFound();
+            }
+
+            var regionDTO = _mapper.Map<Models.DTOs.Region>(region);
+
+            return Ok(regionDTO);
+
+        }
+
+        [HttpPost]
+
+        public async Task<IActionResult> AddRegionAsync(Models.DTOs.AddRegionRequest addRegionRequest)
+        {
+            // Request(DTO) to domain model
+
+            var region = new Models.Domain.Region()
+            {
+                Name = addRegionRequest.Name,
+                Code = addRegionRequest.Code,
+                Area = addRegionRequest.Area,
+                Lat = addRegionRequest.Lat,
+                Long = addRegionRequest.Long,
+                Population = addRegionRequest.Population
+            };
+
+            //Pass details to repository
+
+            region = await _regionRepository.AddRegionAsync(region);
+
+            //Convert back to DTO
+
+            var regionsDTO = new Models.DTOs.Region()
+            {
+                Id = region.Id,
+                Name = region.Name,
+                Code = region.Code,
+                Area = region.Area,
+                Lat = region.Lat,
+                Long = region.Long,
+                Population = region.Population
+            };
+
+            return CreatedAtAction(nameof(GetOneRegionAsync), new { id = regionsDTO.Id }, regionsDTO);
+        }
+
+
     }
 }
