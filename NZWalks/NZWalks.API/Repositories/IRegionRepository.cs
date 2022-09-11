@@ -7,3 +7,4 @@ namespace NZWalks.API.Repositories
        Task<IEnumerable<Region>> GetAllAsync();
     }
 }
+
