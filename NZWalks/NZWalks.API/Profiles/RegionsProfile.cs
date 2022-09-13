@@ -2,11 +2,12 @@
 
 namespace NZWalks.API.Profiles
 {
-    public class RegionsProfile: Profile
+    public class RegionsProfile : Profile
     {
         public RegionsProfile()
         {
-            CreateMap<Models.Domain.Region, Models.DTOs.Region>();
+            CreateMap<Models.Domain.Region, Models.DTOs.Region>()
+                .ReverseMap();
         }
     }
 }

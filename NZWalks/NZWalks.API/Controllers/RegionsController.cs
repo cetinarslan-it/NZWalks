@@ -36,7 +36,7 @@ namespace NZWalks.API.Controllers
         [ActionName("GetOneRegionAsync")]
         public async Task<IActionResult> GetOneRegionAsync(Guid id)
         {
-            var region = await _regionRepository.GetSingleRegionAsync(id);
+            var region = await _regionRepository.GetOneRegionAsync(id);
 
             if (region == null)
             {
@@ -50,7 +50,6 @@ namespace NZWalks.API.Controllers
         }
 
         [HttpPost]
-
         public async Task<IActionResult> AddRegionAsync(Models.DTOs.AddRegionRequest addRegionRequest)
         {
             // Request(DTO) to domain model
@@ -85,6 +84,33 @@ namespace NZWalks.API.Controllers
             return CreatedAtAction(nameof(GetOneRegionAsync), new { id = regionsDTO.Id }, regionsDTO);
         }
 
+        [HttpDelete]
+        [Route("{id:guid}")]
+
+        public async Task<IActionResult> DeleteOneRegion(Guid id)
+        {
+            //Get the data from repository(DB)
+
+            var region = await _regionRepository.GetOneRegionAsync(id);
+
+            //if null return NotFound()
+
+            if (region == null)
+            {
+                return NotFound();
+            }
+
+            region = await _regionRepository.DeleteRegionAsync(id);
+
+
+            //Convert response back to DTO
+
+            var regionDTO = _mapper.Map<Models.DTOs.Region>(region);
+
+            //return Ok();
+
+            return Ok(regionDTO);
+        }
 
     }
 }

@@ -7,29 +7,45 @@ namespace NZWalks.API.Repositories
 {
     public class RegionRepository : IRegionRepository
     {
-        private NZWalksDbContext nZWalksDbContext;
+        private NZWalksDbContext _nZWalksDbContext;
         public RegionRepository(NZWalksDbContext nZWalksDbContext)
         {
-            this.nZWalksDbContext = nZWalksDbContext;
+            _nZWalksDbContext = nZWalksDbContext;
+        }
+
+        public async Task<IEnumerable<Region>> GetAllRegionsAsync()
+        {
+            return await
+                _nZWalksDbContext.Regions.ToListAsync();
+        }
+
+        public async Task<Region> GetOneRegionAsync(Guid id)
+        {
+            return await _nZWalksDbContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Region> AddRegionAsync(Region region)
         {
             region.Id = Guid.NewGuid();
-            await nZWalksDbContext.AddAsync(region);
-            await nZWalksDbContext.SaveChangesAsync();
+            await _nZWalksDbContext.Regions.AddAsync(region);
+            await _nZWalksDbContext.SaveChangesAsync();
 
             return region;
         }
 
-        public async Task<IEnumerable<Region>> GetAllRegionsAsync()
+        public async Task<Region> DeleteRegionAsync(Guid id)
         {
-            return await nZWalksDbContext.Regions.ToListAsync();
-        }
+            var region = await _nZWalksDbContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
 
-        public async Task<Region> GetSingleRegionAsync(Guid id)
-        {
-            return await nZWalksDbContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
+            if (region == null)
+            {
+                return null;
+            }
+
+            _nZWalksDbContext.Regions.Remove(region);
+            await _nZWalksDbContext.SaveChangesAsync();
+
+            return region;
         }
     }
 }
