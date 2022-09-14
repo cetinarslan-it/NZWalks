@@ -55,6 +55,12 @@ namespace NZWalks.API.Controllers
         public async Task<IActionResult> AddWalkAsync([FromBody] Models.DTOs.AddWalkRequest addWalkRequest)
         {
 
+            // Validate the incoming request
+            if (!(await ValidateAddWalkAsync(addWalkRequest)))
+            {
+                return BadRequest(ModelState);
+            }
+
             // Convert DTO to Domain Object
             var walkDomain = new Models.Domain.Walk
             {
@@ -87,7 +93,11 @@ namespace NZWalks.API.Controllers
         public async Task<IActionResult> UpdateWalkAsync([FromRoute] Guid id,
            [FromBody] Models.DTOs.UpdateWalkRequestDTO updateWalkRequest)
         {
-
+            // Validate the incoming request
+            if (!(await ValidateUpdateWalkAsync(updateWalkRequest)))
+            {
+                return BadRequest(ModelState);
+            }
 
             // Convert DTO to Domain object
             var walkDomain = new Models.Domain.Walk
@@ -137,6 +147,70 @@ namespace NZWalks.API.Controllers
 
             return Ok(walkDTO);
         }
+
+        #region Private Methods
+
+
+        private async Task<bool> ValidateAddWalkAsync(Models.DTOs.AddWalkRequest addWalkRequest)
+        {
+            if (addWalkRequest == null)
+            {
+                ModelState.AddModelError(nameof(addWalkRequest),
+                    $"{nameof(addWalkRequest)} cannot be empty.");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(addWalkRequest.Name))
+            {
+                ModelState.AddModelError(nameof(addWalkRequest.Name),
+                    $"{nameof(addWalkRequest.Name)} is required.");
+            }
+
+            if (addWalkRequest.Length <= 0)
+            {
+                ModelState.AddModelError(nameof(addWalkRequest.Length),
+                    $"{nameof(addWalkRequest.Length)} should be greater than zero.");
+            }
+
+            if (ModelState.ErrorCount > 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private async Task<bool> ValidateUpdateWalkAsync(Models.DTOs.UpdateWalkRequestDTO updateWalkRequest)
+        {
+            if (updateWalkRequest == null)
+            {
+                ModelState.AddModelError(nameof(updateWalkRequest),
+                    $"{nameof(updateWalkRequest)} cannot be empty.");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(updateWalkRequest.Name))
+            {
+                ModelState.AddModelError(nameof(updateWalkRequest.Name),
+                    $"{nameof(updateWalkRequest.Name)} is required.");
+            }
+
+            if (updateWalkRequest.Length <= 0)
+            {
+                ModelState.AddModelError(nameof(updateWalkRequest.Length),
+                    $"{nameof(updateWalkRequest.Length)} should be greater than zero.");
+            }
+
+            if (ModelState.ErrorCount > 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+
+        #endregion
 
     }
 

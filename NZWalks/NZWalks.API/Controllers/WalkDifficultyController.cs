@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NZWalks.API.Models.DTOs;
 using NZWalks.API.Repositories;
 
 namespace NZWalks.API.Controllers
@@ -63,6 +64,7 @@ namespace NZWalks.API.Controllers
 
         public async Task<IActionResult> UpdateWalkDifficultyAsync([FromRoute] Guid id, [FromBody] Models.DTOs.WalkDifficulty walkDifficulty)
         {
+
 
             var walkDifficultyDomain = await _walkDifficultyRepository.GetSingleWalkDifficultyAsync(id);
 
