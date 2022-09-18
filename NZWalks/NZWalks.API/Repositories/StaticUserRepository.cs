@@ -6,19 +6,19 @@ namespace NZWalks.API.Repositories
     {
         private List<User> Users = new List<User>()
         {
-            new User()
-            {
-                FirstName = "Read Only", LastName = "User" , EmailAddress = "readonly@user.com",
-                Id = Guid.NewGuid(), Username = "readonly@user.com", Password = "Readonly@user",
-                Roles = new List<string>{ "reader" }
-            },
+            //new User()
+            //{
+            //    FirstName = "Read Only", LastName = "User" , EmailAddress = "readonly@user.com",
+            //    Id = Guid.NewGuid(), Username = "readonly@user.com", Password = "Readonly@user",
+            //    Roles = new List<string>{ "reader" }
+            //},
 
-            new User()
-            {
-                FirstName = "Write Only", LastName = "User" , EmailAddress = "writeonly@user.com",
-                Id = Guid.NewGuid(), Username = "writeonly@user.com", Password = "Writeonly@user",
-                Roles = new List<string>{ "reader","writer" }
-            }
+            //new User()
+            //{
+            //    FirstName = "Write Only", LastName = "User" , EmailAddress = "writeonly@user.com",
+            //    Id = Guid.NewGuid(), Username = "writeonly@user.com", Password = "Writeonly@user",
+            //    Roles = new List<string>{ "reader","writer" }
+            //}
 
         };
         public async Task<User> UserAuthenticateAsync(string username, string password)
