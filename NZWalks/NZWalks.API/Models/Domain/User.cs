@@ -13,7 +13,6 @@ namespace NZWalks.API.Models.Domain
         [NotMapped]
         public List<string> Roles { get; set; }
 
-
         // Navigation property
         public List<User_Role> UserRoles { get; set; }
     }

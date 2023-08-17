@@ -26,7 +26,8 @@ namespace NZWalks.API.Controllers
 
 
         [HttpGet]
-        [Authorize(Roles = "reader")]
+        [Route("[action]")]
+        //[Authorize(Roles = "reader")]
         public async Task<IActionResult> GetAllRegions()
         {
             var regions = await _regionRepository.GetAllRegionsAsync();
@@ -37,10 +38,10 @@ namespace NZWalks.API.Controllers
         }
 
         [HttpGet]
-        [Route("{id:guid}")]
-        [ActionName("GetOneRegionAsync")]
-        [Authorize(Roles = "reader")]
-        public async Task<IActionResult> GetOneRegionAsync(Guid id)
+        [Route("[action]")] //  /{id:guid}
+        [ActionName("GetOneRegionWithId")]
+        //[Authorize(Roles = "reader")]
+        public async Task<IActionResult> GetOneRegionAsync([FromQuery] Guid id)
         {
             var region = await _regionRepository.GetOneRegionAsync(id);
 
@@ -56,7 +57,7 @@ namespace NZWalks.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "writer")]
+        //[Authorize(Roles = "writer")]
         public async Task<IActionResult> AddRegionAsync(Models.DTOs.AddRegionRequest addRegionRequest)
         {
             // Validate The Request
@@ -100,7 +101,7 @@ namespace NZWalks.API.Controllers
 
         [HttpDelete]
         [Route("{id:guid}")]
-        [Authorize(Roles = "writer")]
+        //[Authorize(Roles = "writer")]
 
         public async Task<IActionResult> DeleteOneRegion(Guid id)
         {
@@ -129,7 +130,7 @@ namespace NZWalks.API.Controllers
 
         [HttpPut]
         [Route("{id:guid}")]
-        [Authorize(Roles = "writer")]
+        //[Authorize(Roles = "writer")]
         public async Task<IActionResult> UpdateRegionAsync([FromRoute] Guid id,
         [FromBody] Models.DTOs.UpdateRegionRequest updateRegionRequest)
         {
@@ -155,7 +156,7 @@ namespace NZWalks.API.Controllers
             region = await _regionRepository.UpdateRegionAsync(id, region);
 
 
-            // If Null then NotFound
+            // If Null then NotFoundn
             if (region == null)
             {
                 return NotFound();
